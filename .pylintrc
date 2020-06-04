@@ -1,0 +1,6 @@
+[FORMAT]
+max-line-length=120
+ignore=tests,setting
+min-public-methods=0
+extension-pkg-whitelist=ujson
+disable=unused-argument,invalid-name,duplicate-code

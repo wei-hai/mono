@@ -1,0 +1,18 @@
+pyjwt
+marshmallow
+retrying
+
+# Sanic
+sanic
+sanic-openapi==0.6.0
+sanic_compress
+
+# Database
+psycopg2-binary
+aioredis
+sqlalchemy
+marshmallow_sqlalchemy
+alembic
+
+# Sentry
+sentry-sdk
