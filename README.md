@@ -1,6 +1,6 @@
 # Mono
 
-Mono service
+Mono service, it uses [Sanic](https://github.com/huge-success/sanic) and works with sqlalchemy, postgres and redis to build a service that demonstrates user sign up, sign in and jwt refresh.
 
 ## Development
 
