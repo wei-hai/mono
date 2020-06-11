@@ -53,4 +53,4 @@ db-downgrade:
 
 # Docker
 docker-build:
-	docker build -t mono:latest .
+	docker build -t $(PROJECT_NAME):latest .
