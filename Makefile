@@ -27,7 +27,14 @@ run:
 	$(VIRTUAL_ENV)/bin/python -m application.driver --host 0.0.0.0 --port 8080
 
 test:
-	$(VIRTUAL_ENV)/bin/pytest
+	@$(VIRTUAL_ENV)/bin/pytest \
+		-n auto \
+		-c pytest.ini \
+		--cov-config=.coveragerc \
+		--cov=application \
+		--cov-report=term-missing \
+		--cov-report=term:skip-covered \
+		--cov-report=xml:coverage.xml
 
 pylint:
 	$(VIRTUAL_ENV)/bin/pylint application tests
@@ -45,7 +52,7 @@ check:
 	make pylint flake8 mypy black
 
 format:
-	$(VIRTUAL_ENV)/bin/black -S application
+	$(VIRTUAL_ENV)/bin/black -S application tests
 
 # Database
 db-revision:

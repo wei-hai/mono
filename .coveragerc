@@ -1,0 +1,5 @@
+[run]
+omit=tests/*,
+	application/api/health_check.py,
+	application/factory.py,
+	application/driver.py
