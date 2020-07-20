@@ -2,7 +2,8 @@ flake8
 pylint
 mypy
 black
+pytest-xdist
 pytest-cov
 pytest-sanic
 asynctest
-codecov
+faker

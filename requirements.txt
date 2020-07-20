@@ -1,6 +1,7 @@
 pyjwt
 marshmallow
 retrying
+aiohttp
 
 # Sanic
 sanic
