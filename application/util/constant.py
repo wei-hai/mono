@@ -8,6 +8,7 @@ class CacheKey:
     """
     Get key for cache value
     """
+
     @staticmethod
     def user_role(user_id: int):
         """

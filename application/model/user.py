@@ -11,6 +11,7 @@ class User(Base, TimestampMixin):
     """
     User model
     """
+
     __tablename__ = "user"
     id = sa.Column(sa.BigInteger, primary_key=True)
     email = sa.Column(sa.String(255), nullable=False)

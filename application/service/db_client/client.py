@@ -14,11 +14,14 @@ class DatabaseEngineManager:
     """
     Manage master and slave connections
     """
+
     masters: List[Engine] = []
     slaves: List[Engine] = []
 
     @staticmethod
-    def create_engines(master_database_url: List[str], slave_database_url: Optional[List[str]] = None):
+    def create_engines(
+        master_database_url: List[str], slave_database_url: Optional[List[str]] = None
+    ):
         """
         Create master and slave engines
         @param master_database_url:
@@ -29,7 +32,9 @@ class DatabaseEngineManager:
             DatabaseEngineManager.masters.append(create_engine(url, pool_pre_ping=True))
         if slave_database_url:
             for url in slave_database_url:
-                DatabaseEngineManager.slaves.append(create_engine(url, pool_pre_ping=True))
+                DatabaseEngineManager.slaves.append(
+                    create_engine(url, pool_pre_ping=True)
+                )
 
 
 class RoutingSession(Session):
@@ -45,14 +50,19 @@ class RoutingSession(Session):
         @return:
         """
         if not self._flushing and DatabaseEngineManager.slaves:
-            return DatabaseEngineManager.slaves[random.randrange(len(DatabaseEngineManager.slaves))]
-        return DatabaseEngineManager.masters[random.randrange(len(DatabaseEngineManager.masters))]
+            return DatabaseEngineManager.slaves[
+                random.randrange(len(DatabaseEngineManager.slaves))
+            ]
+        return DatabaseEngineManager.masters[
+            random.randrange(len(DatabaseEngineManager.masters))
+        ]
 
 
 class DatabaseClient:
     """
     DatabaseClient
     """
+
     def __init__(self):
         """
         Init

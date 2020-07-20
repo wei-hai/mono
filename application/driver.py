@@ -20,5 +20,5 @@ if __name__ == "__main__":
         port=args.port,
         debug=args.debug,
         auto_reload=args.auto_reload,
-        workers=args.worker
+        workers=args.worker,
     )

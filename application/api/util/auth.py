@@ -34,7 +34,7 @@ def generate_jwt(issuer: str, subject: str, secret: str, expiration: int) -> byt
         "sub": subject,
         "exp": now + expiration,
         "iat": now,
-        "nbf": now
+        "nbf": now,
     }
     return jwt.encode(payload, secret)
 
@@ -51,11 +51,13 @@ def authenticate(request: Request, secret: str):
         raise Unauthorized('Missing JWT')
     try:
         payload = jwt.decode(
-            token,
-            secret,
-            algorithms=["HS256"],
-            options=dict(require_exp=True))
-    except (jwt.ExpiredSignatureError, jwt.DecodeError, jwt.MissingRequiredClaimError) as ex:
+            token, secret, algorithms=["HS256"], options=dict(require_exp=True)
+        )
+    except (
+        jwt.ExpiredSignatureError,
+        jwt.DecodeError,
+        jwt.MissingRequiredClaimError,
+    ) as ex:
         raise Unauthorized(str(ex))
     request.ctx.token = token
     request.ctx.user_id = int(payload["sub"])
@@ -73,7 +75,9 @@ async def authorize(request: Request, roles: Optional[List[str]]):
     redis_client: Redis = request.app.redis_client
     db_client: DatabaseClient = request.app.db_client
     user_id: int = request.ctx.user_id
-    cached_role: str = await redis_client.get(CacheKey.user_role(user_id), encoding="utf-8")
+    cached_role: str = await redis_client.get(
+        CacheKey.user_role(user_id), encoding="utf-8"
+    )
     if cached_role:
         if cached_role not in roles:
             raise Unauthorized("Unauthorized")

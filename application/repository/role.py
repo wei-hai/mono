@@ -19,11 +19,9 @@ class RoleSchema(ModelSchema):
         """
         Meta
         """
+
         model = Role
-        fields = (
-            "id",
-            "name"
-        )
+        fields = ("id", "name")
 
 
 class RoleRepository(BaseRepository):
@@ -38,7 +36,12 @@ class RoleRepository(BaseRepository):
         @return:
         """
         with self.db_client.scoped_session() as session:
-            role = session.query(Role).join(User, Role.id == User.role_id).filter(User.id == user_id).first()
+            role = (
+                session.query(Role)
+                .join(User, Role.id == User.role_id)
+                .filter(User.id == user_id)
+                .first()
+            )
             if not role:
                 return None
             return RoleSchema().dump(role)

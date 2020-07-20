@@ -30,16 +30,22 @@ test:
 	$(VIRTUAL_ENV)/bin/pytest
 
 pylint:
-	$(VIRTUAL_ENV)/bin/pylint application
+	$(VIRTUAL_ENV)/bin/pylint application tests
 
 flake8:
-	$(VIRTUAL_ENV)/bin/flake8 application
+	$(VIRTUAL_ENV)/bin/flake8 application tests
 
 mypy:
-	$(VIRTUAL_ENV)/bin/mypy
+	$(VIRTUAL_ENV)/bin/mypy --show-error-codes
+
+black:
+	$(VIRTUAL_ENV)/bin/black -S --check application tests
 
 check:
-	make pylint flake8 mypy
+	make pylint flake8 mypy black
+
+format:
+	$(VIRTUAL_ENV)/bin/black -S application
 
 # Database
 db-revision:

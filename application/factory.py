@@ -27,13 +27,18 @@ async def before_server_start(app: Sanic):
     """
     DatabaseEngineManager.create_engines(
         master_database_url=app.config["MASTER_DATABASE_URL"],
-        slave_database_url=app.config["SLAVE_DATABASE_URL"])
+        slave_database_url=app.config["SLAVE_DATABASE_URL"],
+    )
     app.db_client = DatabaseClient()
     app.redis_client = await aioredis.create_redis_pool(app.config["REDIS_URL"])
     sentry_sdk.init(
         dsn=app.config["SENTRY_DSN"],
         environment=app.config["ENV"],
-        integrations=[SanicIntegration(), AioHttpIntegration(), SqlalchemyIntegration()]
+        integrations=[
+            SanicIntegration(),
+            AioHttpIntegration(),
+            SqlalchemyIntegration(),
+        ],
     )
 
 
