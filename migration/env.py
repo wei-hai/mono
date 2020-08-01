@@ -14,17 +14,17 @@ fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from application import model
-target_metadata = model.Base.metadata
+from application.model import Base
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-from application.setting.env import MASTER_DATABASE_URL
-database_url = MASTER_DATABASE_URL
-if isinstance(MASTER_DATABASE_URL, list):
-    database_url = MASTER_DATABASE_URL[0]
+from application.setting.env import PRIMARY_DB_URL
+database_url = PRIMARY_DB_URL
+if isinstance(PRIMARY_DB_URL, list):
+    database_url = PRIMARY_DB_URL[0]
 
 
 def run_migrations_offline():

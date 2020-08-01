@@ -8,12 +8,12 @@ from sanic.request import Request
 from sanic.response import json
 from sanic_openapi import doc
 
-from application.api.util.auth import generate_jwt, auth
 from application.api.v1.auth.schema import SignUpPostSchema, SignInPostSchema
 from application.model.user import User
 from application.repository.user import UserRepository
+from application.util.auth import generate_jwt, auth
 
-bp = Blueprint(name="/v1/auth", url_prefix="/v1/auth")
+bp = Blueprint(name="Auth Service", url_prefix="/v1/auth")
 
 
 @bp.post("/sign_up")
@@ -24,7 +24,7 @@ bp = Blueprint(name="/v1/auth", url_prefix="/v1/auth")
     content_type="application/json",
     location="body",
 )
-@doc.consumes({'Authorization': str}, location="header")
+@doc.consumes({'Authorization': str}, location="header", required=True)
 @doc.produces(User, description="user object", content_type="application/json")
 async def sign_up(request: Request):
     """
@@ -91,7 +91,7 @@ async def sign_in(request: Request):
 @bp.get("/refresh_access_token")
 @doc.summary("Refresh access token")
 @doc.description("Use refresh_token in the header to pass authentication")
-@doc.consumes({'Authorization': str}, location="header")
+@doc.consumes({'Authorization': str}, location="header", required=True)
 @doc.produces({"token": str}, description="Token", content_type="application/json")
 @auth(secret_key="JWT_REFRESH_SECRET")
 async def refresh_access_token(request: Request):

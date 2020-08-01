@@ -7,4 +7,5 @@ disable=unused-argument,
     invalid-name,
     duplicate-code,
     no-member,
+    too-many-arguments,
     bad-continuation

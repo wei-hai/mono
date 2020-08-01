@@ -13,13 +13,13 @@ from sanic.exceptions import Unauthorized
 from sanic.request import Request
 
 from application.repository.role import RoleRepository
-from application.service.db_client.client import DatabaseClient
+from application.service.common.db_client import DatabaseClient
 from application.util.constant import ACTIVE_ROLES, CacheKey
 
 logger = logging.getLogger(__name__)
 
 
-def generate_jwt(issuer: str, subject: str, secret: str, expiration: int) -> bytes:
+def generate_jwt(issuer: str, subject: str, secret: str, expiration: int) -> str:
     """
     Generate JWT
     @param issuer:
@@ -36,7 +36,7 @@ def generate_jwt(issuer: str, subject: str, secret: str, expiration: int) -> byt
         "iat": now,
         "nbf": now,
     }
-    return jwt.encode(payload, secret)
+    return jwt.encode(payload, secret).decode()
 
 
 def authenticate(request: Request, secret: str):

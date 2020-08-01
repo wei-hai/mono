@@ -13,10 +13,9 @@ from sentry_sdk.integrations.sanic import SanicIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from application.api.error_handler import error_handler
-from application.api.health_check import health_check
 from application.api.register import register_blueprints
-from application.service.db_client.client import DatabaseClient
-from application.service.db_client.client import DatabaseEngineManager
+from application.service.common.db_client import DatabaseClient
+from application.service.common.db_client import DatabaseEngineManager
 
 
 async def before_server_start(app: Sanic):
@@ -26,8 +25,8 @@ async def before_server_start(app: Sanic):
     @return:
     """
     DatabaseEngineManager.create_engines(
-        master_database_url=app.config["MASTER_DATABASE_URL"],
-        slave_database_url=app.config["SLAVE_DATABASE_URL"],
+        primary_db_urls=[app.config["PRIMARY_DB_URL"]],
+        replica_db_urls=[app.config["REPLICA_DB_URL"]],
     )
     app.db_client = DatabaseClient()
     app.redis_client = await aioredis.create_redis_pool(app.config["REDIS_URL"])
@@ -62,7 +61,6 @@ def create_app(default_settings: str = "application/setting/env.py") -> Sanic:
     Compress(app)
     app.config.from_pyfile(default_settings)
     app.blueprint(swagger_blueprint)
-    app.add_route(health_check, "/health_check")
     register_blueprints(app)
     app.error_handler.add(SanicException, error_handler)
 

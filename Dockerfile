@@ -1,7 +1,7 @@
-FROM python:3.7-slim
+FROM python:3.8-slim
 
 RUN apt-get update \
-    && apt-get install make gcc -y \
+    && apt-get install make gcc g++ -y \
     && apt-get clean
 COPY requirements.txt /app/requirements.txt
 WORKDIR /app

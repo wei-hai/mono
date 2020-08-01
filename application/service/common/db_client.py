@@ -12,27 +12,29 @@ from sqlalchemy.orm import sessionmaker, Session
 
 class DatabaseEngineManager:
     """
-    Manage master and slave connections
+    Manage primary and replica connections
     """
 
-    masters: List[Engine] = []
-    slaves: List[Engine] = []
+    primaries: List[Engine] = []
+    replicas: List[Engine] = []
 
     @staticmethod
     def create_engines(
-        master_database_url: List[str], slave_database_url: Optional[List[str]] = None
+        primary_db_urls: List[str], replica_db_urls: Optional[List[str]] = None
     ):
         """
-        Create master and slave engines
-        @param master_database_url:
-        @param slave_database_url:
+        Create primary and replica engines
+        @param primary_db_urls:
+        @param replica_db_urls:
         @return:
         """
-        for url in master_database_url:
-            DatabaseEngineManager.masters.append(create_engine(url, pool_pre_ping=True))
-        if slave_database_url:
-            for url in slave_database_url:
-                DatabaseEngineManager.slaves.append(
+        for url in primary_db_urls:
+            DatabaseEngineManager.primaries.append(
+                create_engine(url, pool_pre_ping=True)
+            )
+        if replica_db_urls:
+            for url in replica_db_urls:
+                DatabaseEngineManager.replicas.append(
                     create_engine(url, pool_pre_ping=True)
                 )
 
@@ -49,12 +51,12 @@ class RoutingSession(Session):
         @param clause:
         @return:
         """
-        if not self._flushing and DatabaseEngineManager.slaves:
-            return DatabaseEngineManager.slaves[
-                random.randrange(len(DatabaseEngineManager.slaves))
+        if not self._flushing and DatabaseEngineManager.replicas:
+            return DatabaseEngineManager.replicas[
+                random.randrange(len(DatabaseEngineManager.replicas))
             ]
-        return DatabaseEngineManager.masters[
-            random.randrange(len(DatabaseEngineManager.masters))
+        return DatabaseEngineManager.primaries[
+            random.randrange(len(DatabaseEngineManager.primaries))
         ]
 
 
@@ -82,5 +84,4 @@ class DatabaseClient:
             session.rollback()
             raise
         finally:
-            session.expunge_all()
             session.close()

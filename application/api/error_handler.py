@@ -3,6 +3,7 @@ This module includes error handler
 """
 from typing import Any
 
+from sanic.log import logger
 from sanic.request import Request
 from sanic.response import json
 
@@ -14,6 +15,7 @@ async def error_handler(request: Request, exception: Any):
     @param exception:
     @return:
     """
-    response = json(str(exception))
+    logger.error(exception)
+    response = json({"message": exception.args[0]})
     response.status = exception.status_code
     return response

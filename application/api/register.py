@@ -5,7 +5,8 @@ This module registers all api endpoints
 from sanic import Blueprint
 from sanic import Sanic
 
-from application.api.v1.auth.blueprint import bp
+from application.api.health_check import bp as health_check
+from application.api.v1.auth.blueprint import bp as auth
 
 
 def register_blueprints(app: Sanic):
@@ -14,5 +15,5 @@ def register_blueprints(app: Sanic):
     @param app:
     @return:
     """
-    v1 = Blueprint.group(bp, url_prefix="/api/mono")
+    v1 = Blueprint.group(auth, health_check)
     app.blueprint(v1)

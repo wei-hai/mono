@@ -1,4 +1,5 @@
 #!/bin/sh
 
 cd /app
-make db-upgrade run
+PYTHONPATH=$PWD alembic upgrade head
+python -m application.driver --host 0.0.0.0 --port 8080

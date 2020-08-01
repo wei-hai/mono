@@ -1,7 +1,8 @@
 pyjwt
 marshmallow
-retrying
-aiohttp
+tenacity
+aiohttp[speedups]
+psutil
 
 # Sanic
 sanic

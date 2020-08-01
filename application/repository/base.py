@@ -1,7 +1,7 @@
 """
 Base Repository
 """
-from application.service.db_client.client import DatabaseClient
+from application.service.common.db_client import DatabaseClient
 
 
 class BaseRepository:
