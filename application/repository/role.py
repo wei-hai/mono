@@ -1,7 +1,7 @@
 """
 UserRepository
 """
-from typing import Optional, Dict
+from typing import Dict, Optional
 
 from marshmallow_sqlalchemy import ModelSchema
 

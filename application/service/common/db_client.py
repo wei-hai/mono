@@ -7,7 +7,7 @@ from typing import List, Optional
 
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 
 
 class DatabaseEngineManager:

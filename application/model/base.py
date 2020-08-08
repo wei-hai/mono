@@ -4,7 +4,7 @@ Mixins
 from uuid import uuid4
 
 import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
+from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.sql import func
 
 Base: DeclarativeMeta = declarative_base()

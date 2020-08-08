@@ -8,10 +8,10 @@ from sanic.request import Request
 from sanic.response import json
 from sanic_openapi import doc
 
-from application.api.v1.auth.schema import SignUpPostSchema, SignInPostSchema
+from application.api.v1.auth.schema import SignInPostSchema, SignUpPostSchema
 from application.model.user import User
 from application.repository.user import UserRepository
-from application.util.auth import generate_jwt, auth
+from application.util.auth import auth, generate_jwt
 
 bp = Blueprint(name="Auth Service", url_prefix="/v1/auth")
 

@@ -14,8 +14,7 @@ from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from application.api.error_handler import error_handler
 from application.api.register import register_blueprints
-from application.service.common.db_client import DatabaseClient
-from application.service.common.db_client import DatabaseEngineManager
+from application.service.common.db_client import DatabaseClient, DatabaseEngineManager
 
 
 async def before_server_start(app: Sanic):

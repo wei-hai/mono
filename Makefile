@@ -1,4 +1,4 @@
-PROJECT_NAME:=backend-mono
+PROJECT_NAME:=mono
 VIRTUAL_ENV:=venv
 
 # Development
@@ -48,10 +48,14 @@ mypy:
 black:
 	$(VIRTUAL_ENV)/bin/black -S --check application tests
 
+isort:
+	$(VIRTUAL_ENV)/bin/isort -m 3 -tc -w 88 -c -rc application tests
+
 check:
-	make bandit pylint flake8 mypy black
+	make bandit pylint flake8 mypy isort black
 
 format:
+	$(VIRTUAL_ENV)/bin/isort -m 3 -tc -w 88 -rc application tests
 	$(VIRTUAL_ENV)/bin/black -S application tests
 
 # Database
@@ -67,3 +71,4 @@ db-downgrade:
 # Docker
 docker-build:
 	docker build -t $(PROJECT_NAME):latest .
+

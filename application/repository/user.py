@@ -1,8 +1,8 @@
 """
 UserRepository
 """
-from crypt import crypt, mksalt, METHOD_SHA256
-from typing import Optional, Dict
+from crypt import METHOD_SHA256, crypt, mksalt
+from typing import Dict, Optional
 
 from marshmallow_sqlalchemy import ModelSchema
 

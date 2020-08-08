@@ -1,12 +1,12 @@
 """
 This module includes the BaseApiClient
 """
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 import aiohttp
-from aiohttp import ServerTimeoutError, ServerConnectionError, ServerDisconnectedError
+from aiohttp import ServerConnectionError, ServerDisconnectedError, ServerTimeoutError
 from sanic.exceptions import SanicException
-from tenacity import retry, stop_after_attempt, retry_if_exception_type
+from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
 from application.util.exception import ApiServerError
 
