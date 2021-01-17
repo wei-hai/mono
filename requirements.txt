@@ -6,7 +6,7 @@ psutil
 
 # Sanic
 sanic
-sanic-openapi==0.6.0
+sanic-openapi
 sanic_compress
 
 # Database
