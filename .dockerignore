@@ -1,7 +1,10 @@
+.git
 .github
 tests
 docker-compose*
 
 env
+venv
 .mypy_cache
 .pytest_cache
+__pycache__

@@ -58,8 +58,8 @@ def create_app(default_settings: str = "application/setting/env.py") -> Sanic:
     """
     app = Sanic(__name__)
     Compress(app)
-    app.config.from_pyfile(default_settings)
-    app.blueprint(swagger_blueprint)
+    app.update_config(default_settings)
+    # app.blueprint(swagger_blueprint)
     register_blueprints(app)
     app.error_handler.add(SanicException, error_handler)
 

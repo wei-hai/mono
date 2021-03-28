@@ -3,8 +3,7 @@ Role
 """
 import sqlalchemy as sa
 
-from application.model import Base
-from application.model.base import TimestampMixin
+from application.model.base import Base, TimestampMixin
 
 
 class Role(Base, TimestampMixin):

@@ -72,3 +72,5 @@ db-downgrade:
 docker-build:
 	docker build -t $(PROJECT_NAME):latest .
 
+docker-build-clean:
+	docker rmi $$(docker images -f "dangling=true" -q)
