@@ -3,14 +3,14 @@ UserRepository
 """
 from typing import Dict, Optional
 
-from marshmallow_sqlalchemy import ModelSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 from application.model.role import Role
 from application.model.user import User
 from application.repository.base import BaseRepository
 
 
-class RoleSchema(ModelSchema):
+class RoleSchema(SQLAlchemyAutoSchema):
     """
     RoleSchema
     """

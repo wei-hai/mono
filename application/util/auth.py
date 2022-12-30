@@ -8,7 +8,7 @@ from functools import wraps
 from typing import Callable, List, Optional
 
 import jwt
-from aioredis import Redis
+from redis.asyncio import Redis
 from sanic.exceptions import Unauthorized
 from sanic.request import Request
 
@@ -72,8 +72,8 @@ async def authorize(request: Request, roles: Optional[List[str]]):
     """
     if not roles:
         roles = ACTIVE_ROLES
-    redis_client: Redis = request.app.redis_client
-    db_client: DatabaseClient = request.app.db_client
+    redis_client: Redis = request.app.ctx.redis_client
+    db_client: DatabaseClient = request.app.ctx.db_client
     user_id: int = request.ctx.user_id
     cached_role: str = await redis_client.get(
         CacheKey.user_role(user_id), encoding="utf-8"

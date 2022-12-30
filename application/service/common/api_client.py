@@ -12,8 +12,7 @@ from application.util.exception import ApiServerError
 
 
 class BaseApiClient:
-    """Base API Client
-    """
+    """Base API Client"""
 
     @retry(
         stop=stop_after_attempt(3),

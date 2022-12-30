@@ -1,9 +1,8 @@
 """
 This module provides function to create Sanic application
 """
-
-import aioredis
 import sentry_sdk
+from redis import asyncio as aioredis
 from sanic import Sanic
 from sanic.exceptions import SanicException
 from sanic_compress import Compress
@@ -27,8 +26,9 @@ async def before_server_start(app: Sanic):
         primary_db_urls=[app.config["PRIMARY_DB_URL"]],
         replica_db_urls=[app.config["REPLICA_DB_URL"]],
     )
-    app.db_client = DatabaseClient()
-    app.redis_client = await aioredis.create_redis_pool(app.config["REDIS_URL"])
+    
+    app.ctx.db_client = DatabaseClient()
+    app.ctx.redis_client = aioredis.ConnectionPool(app.config["REDIS_URL"])
     sentry_sdk.init(
         dsn=app.config["SENTRY_DSN"],
         environment=app.config["ENV"],
@@ -46,8 +46,7 @@ async def after_server_stop(app: Sanic):
     @param app:
     @return:
     """
-    app.redis_client.close()
-    await app.redis_client.wait_closed()
+    await app.ctx.redis_client.disconnect()
 
 
 def create_app(default_settings: str = "application/setting/env.py") -> Sanic:
@@ -56,7 +55,7 @@ def create_app(default_settings: str = "application/setting/env.py") -> Sanic:
     @param default_settings:
     @return:
     """
-    app = Sanic(__name__)
+    app = Sanic("Mono")
     Compress(app)
     app.update_config(default_settings)
     # app.blueprint(swagger_blueprint)

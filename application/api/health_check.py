@@ -6,7 +6,7 @@ from sanic.request import Request
 from sanic.response import json
 from sanic_openapi import doc
 
-bp = Blueprint(name="Health check", url_prefix="/health_check")
+bp = Blueprint(name="Health_check", url_prefix="/health_check")
 
 
 @bp.get("/")

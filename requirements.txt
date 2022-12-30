@@ -11,7 +11,7 @@ sanic_compress
 
 # Database
 psycopg2-binary
-aioredis
+redis
 sqlalchemy
 marshmallow_sqlalchemy
 alembic

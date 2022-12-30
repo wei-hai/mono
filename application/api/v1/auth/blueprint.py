@@ -13,7 +13,7 @@ from application.model.user import User
 from application.repository.user import UserRepository
 from application.util.auth import auth, generate_jwt
 
-bp = Blueprint(name="Auth Service", url_prefix="/v1/auth")
+bp = Blueprint(name="Auth_Service", url_prefix="/v1/auth")
 
 
 @bp.post("/sign_up")
@@ -36,7 +36,7 @@ async def sign_up(request: Request):
         params = SignUpPostSchema().load(request.json)
     except ValidationError as ex:
         raise InvalidUsage(ex.messages)
-    user_repo = UserRepository(request.app.db_client)
+    user_repo = UserRepository(request.app.ctx.db_client)
     user = user_repo.find_by_email(params["email"])
     if user:
         raise InvalidUsage("User already exists", 422)
@@ -67,7 +67,7 @@ async def sign_in(request: Request):
         params = SignInPostSchema().load(request.json)
     except ValidationError as ex:
         raise InvalidUsage(ex.messages)
-    user_repo = UserRepository(request.app.db_client)
+    user_repo = UserRepository(request.app.ctx.db_client)
     user = user_repo.find_by_email_password(params["email"], params["password"])
     if not user:
         raise InvalidUsage("Email or password incorrect")
