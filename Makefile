@@ -74,3 +74,10 @@ docker-build:
 
 docker-build-clean:
 	docker rmi $$(docker images -f "dangling=true" -q)
+
+# Thrift
+thrift-py:
+	@for f in application/thrifts/protocols/*.thrift; do \
+		echo $${f}; \
+		thrift -out $(CURDIR) --gen py $${f}; \
+	done

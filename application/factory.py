@@ -14,6 +14,8 @@ from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 from application.api.error_handler import error_handler
 from application.api.register import register_blueprints
 from application.service.common.db_client import DatabaseClient, DatabaseEngineManager
+from application.service.common.thrift_client import ThriftClientFactory
+from application.thrifts.services.user import UserService
 
 
 async def before_server_start(app: Sanic):
@@ -26,7 +28,7 @@ async def before_server_start(app: Sanic):
         primary_db_urls=[app.config["PRIMARY_DB_URL"]],
         replica_db_urls=[app.config["REPLICA_DB_URL"]],
     )
-    
+
     app.ctx.db_client = DatabaseClient()
     app.ctx.redis_client = aioredis.ConnectionPool(app.config["REDIS_URL"])
     sentry_sdk.init(
@@ -38,6 +40,13 @@ async def before_server_start(app: Sanic):
             SqlalchemyIntegration(),
         ],
     )
+    # Thrift services
+    app.ctx.transports = []
+    user_service_transport, user_service_client = ThriftClientFactory.createUserServiceClient("localhost", 9090)
+    app.ctx.transports.append(user_service_transport)
+    app.ctx.user_service_client = user_service_client
+    for transport in app.ctx.transports:
+        transport.open()
 
 
 async def after_server_stop(app: Sanic):
@@ -47,6 +56,9 @@ async def after_server_stop(app: Sanic):
     @return:
     """
     await app.ctx.redis_client.disconnect()
+    for transport in app.ctx.transports:
+        if transport.isOpen():
+            transport.close()
 
 
 def create_app(default_settings: str = "application/setting/env.py") -> Sanic:
