@@ -131,3 +131,5 @@ dmypy.json
 
 # Thrift
 application/thrifts/services
+
+.idea
