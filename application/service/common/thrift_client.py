@@ -9,6 +9,6 @@ class ThriftClientFactory:
     @classmethod
     def createUserServiceClient(self, host, port) -> Tuple[TTransport.TBufferedTransport, UserService.Client]:
         transport = TTransport.TBufferedTransport(TSocket.TSocket(host=host, port=port))
-        protocol = TMultiplexedProtocol(protocol=TBinaryProtocol.TBinaryProtocol(transport), serviceName="user_service")
+        protocol = TMultiplexedProtocol(protocol=TBinaryProtocol.TBinaryProtocolAccelerated(transport), serviceName="user_service")
         client = UserService.Client(protocol)
         return transport, client
